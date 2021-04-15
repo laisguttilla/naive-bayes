@@ -33,7 +33,6 @@ class NaiveBayes
                 $bestType = $type;
             }
         }
-
         return $bestType;
     }
 
@@ -49,18 +48,23 @@ class NaiveBayes
             }
             $this->words[$type][$word]++;
         }
-
         $this->documents[$type]++;
     }
 
     public function relevantDictionary(array $words, string $type)
     {
         foreach ($words as $word) {
-            if (preg_match('/(["^0-9"])/', $word)) {
-                $this->relevantDictionary[$type] = [];
+            if (preg_match('/(\^[0-9])/', $word)) {
+                $type = trim($type);
+                if(!isset($this->relevantDictionary[$type])) {
+                    $this->relevantDictionary[$type] = [];
+                }
                 $relevantWord = preg_replace('/(["^0-9"])/', '', $word);
                 $value = (int) preg_filter('([^[0-9])', '', $word);
-                $this->relevantDictionary[$type][$relevantWord] =+ $value;
+                if (!isset($this->relevantDictionary[$type][$relevantWord])) {
+                    $this->relevantDictionary[$type][$relevantWord] = 0;
+                }
+                $this->relevantDictionary[$type][$relevantWord] = $this->relevantDictionary[$type][$relevantWord] + $value;
             }
         }
     }
