@@ -28,10 +28,14 @@ class NaiveBayes
                 $likelihood *= $this->wordPropabilityByType($word, $type);
             }
 
+            dump($type . " => " . $likelihood);
+
             if ($likelihood > $bestLikelihood) {
                 $bestLikelihood = $likelihood;
                 $bestType = $type;
             }
+
+            dump($bestType . " => " . $bestLikelihood);
         }
         return $bestType;
     }
@@ -94,8 +98,10 @@ class NaiveBayes
 
     public function wordPropabilityByType($word, $type)
     {
-        $count = isset($this->words[$type][$word]) ? $this->words[$type][$word] : 0;
-
+        $count = 0;
+        if(isset($this->words[$type][$word])) {
+            $count = $this->words[$type][$word];
+        }
         return ($count + 1) / (array_sum($this->words[$type]) + 1);
     }
 
