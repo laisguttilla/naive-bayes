@@ -25,18 +25,17 @@ class NaiveBayes
             $likelihood = $this->totalTypeProbability($type);
 
             foreach ($words as $word) {
-                $likelihood *= $this->wordPropabilityByType($word, $type);
+                $likelihood = $this->wordPropabilityByType($word, $type);
             }
 
-            dump($type . " => " . $likelihood);
 
             if ($likelihood > $bestLikelihood) {
                 $bestLikelihood = $likelihood;
                 $bestType = $type;
             }
 
-            dump($bestType . " => " . $bestLikelihood);
         }
+
         return $bestType;
     }
 
@@ -51,11 +50,8 @@ class NaiveBayes
             }
 
             $this->words[$type][$word]++;
-
-            if (isset($this->relevantDictionary[$type][$word])) {
-                $this->words[$type][$word] = $this->words[$type][$word] + $this->relevantDictionary[$type][$word];
-            }
         }
+        $this->documents[$type]++;
     }
 
     public function relevantDictionary(array $words, string $type)
@@ -99,9 +95,15 @@ class NaiveBayes
     public function wordPropabilityByType($word, $type)
     {
         $count = 0;
-        if(isset($this->words[$type][$word])) {
+        if (isset($this->words[$type][$word])) {
             $count = $this->words[$type][$word];
         }
+
+
+        if (isset($this->relevantDictionary[$type][$word])) {
+            $count = $count * $this->relevantDictionary[$type][$word];
+        }
+
         return ($count + 1) / (array_sum($this->words[$type]) + 1);
     }
 
@@ -110,5 +112,5 @@ class NaiveBayes
         $formatter = new WordFormatter();
         return $formatter->cleanWords($statement);
     }
-}
 
+}
