@@ -28,10 +28,12 @@ class NaiveBayes
                 $likelihood = $this->wordPropabilityByType($word, $type);
             }
 
+
             if ($likelihood > $bestLikelihood) {
                 $bestLikelihood = $likelihood;
                 $bestType = $type;
             }
+
         }
 
         return $bestType;
@@ -49,7 +51,6 @@ class NaiveBayes
 
             $this->words[$type][$word]++;
         }
-
         $this->documents[$type]++;
     }
 
@@ -59,6 +60,7 @@ class NaiveBayes
             $this->relevantDictionary[$type][$word] = $value;
         }
     }
+
 
     public function frequencyPerType($statement)
     {
@@ -109,5 +111,5 @@ class NaiveBayes
         $formatter = new WordFormatter();
         return $formatter->cleanWords($statement);
     }
-}
 
+}

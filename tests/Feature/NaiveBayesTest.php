@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\NaiveBayes;
 use Tests\TestCase;
+use App\Models\BadComments;
 
 class NaiveBayesTest extends TestCase
 {
@@ -14,22 +15,17 @@ class NaiveBayesTest extends TestCase
      */
     public function testNaiveBayes()
     {
+        $comments = BadComments::WhereNotNull('Reclamado')->whereNotNull('RegistroDescricao')->get()->take(50);
         $classifier = new NaiveBayes();
-        $classifier->relevantDictionary([
-            'horrível' => 50000
-        ], 'negative');
-        $classifier->learn('achei o APLICATIVO muito           horrível!!!', 'negative');
-        $classifier->learn('é uma droga', 'negative');
-        $classifier->learn('achei horrível!', 'super negative a parada');
-        $classifier->learn('achei horrível pra cacete!', 'super negative a parada');
-        // $classifier->learn('achei o aplicativo ótimo, é maravilhoso!', 'positive');
-        // $classifier->learn('uma porcaria', 'negative');
-        // $classifier->learn('muito bom!', 'positive');
 
-        // $this->assertEquals('positive', $classifier->guess('bom aplicativo'));
-        $this->assertEquals('super negative a parada', $classifier->guess('é um cacete!'));
+        //$classifier->relevantDictionary();
 
-        // print_r($classifier->frequencyPerType('esse aplicativo é maravilhoso'));
-        // print_r($classifier->frequencyPerType('horrível'));
+        foreach($comments as $comment) {
+            $classifier->learn($comment->Reclamado, $comment->RegistroDescricao);
+        }
+
+        print_r("Classe sugerida -> " . $classifier->guess('minha linha foi cancelada'));
+
+       // print_r($classifier->frequencyPerType());
     }
 }
