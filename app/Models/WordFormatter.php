@@ -55,7 +55,6 @@ class WordFormatter
     {
         $distanceLimit = 1;
         foreach ($this->statement as $word) {
-            $word =  preg_replace('/(["^0-9"])/', '', $word);
             foreach ($this->dictionary as $correctWord) {
                 if (preg_match('/([àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ])/', $word)) {
                     $distanceLimit = 2;
