@@ -9,12 +9,7 @@ class NaiveBayes
     public $words = [];
     public $relevantDictionary = [];
 
-    // protected $cleaner;
-
-    // public function __construct(Cleaner $cleaner)
-    // {
-    //     $this->cleaner = $cleaner;
-    // }
+    protected $cleaner;
 
     public function guess($statement)
     {
@@ -28,12 +23,10 @@ class NaiveBayes
                 $likelihood = $this->wordPropabilityByType($word, $type);
             }
 
-
             if ($likelihood > $bestLikelihood) {
                 $bestLikelihood = $likelihood;
                 $bestType = $type;
             }
-
         }
 
         return $bestType;

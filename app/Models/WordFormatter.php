@@ -5,7 +5,7 @@ namespace App\Models;
 class WordFormatter
 {
     private $stopWords = [
-        'a', 'aplicativo', 'ainda', 'achei', 'além', 'ambas', 'ambos', 'ao', 'as', 'da', 'de', 'do', 'seu', 'que', 'a', 'o', 'e', 'é', 'em', 'essa', 'esse', 'uma', 'um', 'uma', 'uns'
+        'a', 'aplicativo', 'ainda', 'achei', 'além', 'ambas', 'ambos', 'ao', 'as', 'da', 'de', 'do', 'seu', 'que', 'a', 'o', 'e', 'é', 'em', 'essa', 'esse', 'uma', 'um', 'uma', 'uns', 'isso', 'para', 'por', 'se', 'eu', 'me', 'dele', 'dela', 'meu', 'minha', 'os', 'todo', 'toda', 'todos', 'todas', 'na', 'no', 'das', 'dos', 'ter', 'ou', 'qual', 'você', 'vocês', 'fazer', 'fiz'
     ];
 
     private $dictionary = [
@@ -48,6 +48,7 @@ class WordFormatter
     public function cleanStopWords()
     {
         $this->statement = $this->statement = array_diff($this->statement, $this->stopWords);
+        $this->statement =  preg_grep("/[\b\d+\b]/", $this->statement, PREG_GREP_INVERT);
         return $this;
     }
 

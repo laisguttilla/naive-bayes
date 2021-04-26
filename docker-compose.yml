@@ -23,9 +23,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: Uotz123
     volumes:
       - mongo-data:/data/db
-      - type: bind
-        source: ./bad_comments/bad_comments.csv
-        target: /bad_comments/bad_comments.csv
     ports:
       - 27017:27017
     networks:
@@ -38,6 +35,4 @@ networks:
 
 volumes:
   mongo-data:
-    driver: local
-  bad_comments:
     driver: local

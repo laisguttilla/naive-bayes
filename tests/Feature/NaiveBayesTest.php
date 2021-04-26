@@ -4,7 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\NaiveBayes;
 use Tests\TestCase;
-use App\Models\BadComments;
+use App\Models\LearningBase;
+use App\Models\TDNAComment;
 
 class NaiveBayesTest extends TestCase
 {
@@ -15,17 +16,15 @@ class NaiveBayesTest extends TestCase
      */
     public function testNaiveBayes()
     {
-        $comments = BadComments::WhereNotNull('Reclamado')->whereNotNull('RegistroDescricao')->get()->take(50);
+        $comments = LearningBase::all();
         $classifier = new NaiveBayes();
 
-        //$classifier->relevantDictionary();
-
         foreach($comments as $comment) {
-            $classifier->learn($comment->Reclamado, $comment->RegistroDescricao);
+            $classifier->learn($comment->statement, $comment->type);
         }
 
-        print_r("Classe sugerida -> " . $classifier->guess('minha linha foi cancelada'));
+        dump(TDNAComment::find('608718a5d4aad01c441e608f')->comment);
 
-       // print_r($classifier->frequencyPerType());
+        print_r("Classe sugerida -> " . $classifier->guess(TDNAComment::find('608718a5d4aad01c441e608f')->comment));
     }
 }
